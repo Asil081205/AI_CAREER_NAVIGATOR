@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Career Recommendations - DreamRoute AI</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/recommendations.css" />
+    <link rel="stylesheet" href="../css/resume-based-recommendations.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-brain"></i>
+          <span>DreamRoute AI</span>
+        </div>
+        <div class="nav-menu">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li>
+              <a href="extract-edit.html" class="nav-link">Back to Profile</a>
+            </li>
+            <li><a href="#" onclick="logout()" class="nav-link">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="recommendations-container">
+      <!-- Header -->
+      <div class="recommendations-header">
+        <div class="header-content">
+          <h1 class="page-title">
+            <i class="fas fa-brain"></i>
+            Your AI Career Recommendations
+          </h1>
+          <p class="page-subtitle">
+            Personalized insights and career guidance based on your profile
+            analysis
+          </p>
+          <div class="analysis-summary" id="analysisSummary">
+            <div class="summary-item">
+              <span class="summary-label">Primary Field:</span>
+              <span class="summary-value" id="primaryField"
+                >Computer Science</span
+              >
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Skill Match:</span>
+              <span class="summary-value" id="skillMatch">75%</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Job Opportunities:</span>
+              <span class="summary-value" id="jobOpportunities"
+                >12 matches</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recommendations-content">
+        <!-- Skills Gap Analysis -->
+        <div class="recommendation-section">
+          <div class="section-header">
+            <h2><i class="fas fa-chart-line"></i> Skills Gap Analysis</h2>
+            <p class="section-description">
+              Identify areas for improvement to boost your career prospects
+            </p>
+          </div>
+
+          <div class="skills-analysis">
+            <div class="skills-current">
+              <h3>
+                <i
+                  class="fas fa-check-circle"
+                  style="color: var(--success)"
+                ></i>
+                Your Current Skills
+              </h3>
+              <div class="skills-grid" id="currentSkills">
+                <!-- Current skills will be populated by JavaScript -->
+              </div>
+              <div class="skills-count">
+                <span id="currentSkillsCount">0 skills</span>
+              </div>
+            </div>
+
+            <div class="skills-recommended">
+              <h3>
+                <i class="fas fa-plus-circle" style="color: var(--warning)"></i>
+                Recommended Skills to Learn
+              </h3>
+              <div class="skills-grid" id="recommendedSkills">
+                <!-- Recommended skills will be populated by JavaScript -->
+              </div>
+              <div class="skills-count">
+                <span id="recommendedSkillsCount">0 skills to learn</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="progress-overview">
+            <h3>Skill Development Progress</h3>
+            <div class="progress-bar-container">
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  id="skillProgress"
+                  style="width: 0%"
+                ></div>
+              </div>
+              <span class="progress-text" id="skillProgressText">0%</span>
+            </div>
+            <p class="progress-description">
+              You have <span id="skillsCompleted">0</span> out of
+              <span id="skillsTotal">0</span> recommended skills
+            </p>
+          </div>
+        </div>
+
+        <!-- Job Recommendations -->
+        <div class="recommendation-section">
+          <div class="section-header">
+            <h2><i class="fas fa-briefcase"></i> Job Recommendations</h2>
+            <p class="section-description">
+              Curated job opportunities that match your skills and goals
+            </p>
+          </div>
+
+          <div class="job-filters">
+            <button class="filter-btn active" onclick="filterJobs('all')">
+              <i class="fas fa-list"></i> All Jobs
+            </button>
+            <button class="filter-btn" onclick="filterJobs('ai')">
+              <i class="fas fa-robot"></i> AI/ML
+            </button>
+            <button class="filter-btn" onclick="filterJobs('dataScience')">
+              <i class="fas fa-chart-bar"></i> Data Science
+            </button>
+            <button class="filter-btn" onclick="filterJobs('computerScience')">
+              <i class="fas fa-code"></i> Software Dev
+            </button>
+            <button class="filter-btn" onclick="filterJobs('cyberSecurity')">
+              <i class="fas fa-shield-alt"></i> Cybersecurity
+            </button>
+          </div>
+
+          <div class="jobs-container">
+            <div class="jobs-grid" id="jobsGrid">
+              <!-- Jobs will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Learning Path -->
+        <div class="recommendation-section">
+          <div class="section-header">
+            <h2>
+              <i class="fas fa-graduation-cap"></i> Personalized Learning Path
+            </h2>
+            <p class="section-description">
+              Step-by-step learning plan to achieve your career goals
+            </p>
+          </div>
+
+          <div class="learning-path" id="learningPath">
+            <div class="learning-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>Foundation Skills</h4>
+                <p>Master the fundamental skills required for your field</p>
+                <div class="step-skills" id="foundationSkills">
+                  <!-- Foundation skills -->
+                </div>
+              </div>
+            </div>
+
+            <div class="learning-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>Advanced Skills</h4>
+                <p>Develop advanced competencies to stand out</p>
+                <div class="step-skills" id="advancedSkills">
+                  <!-- Advanced skills -->
+                </div>
+              </div>
+            </div>
+
+            <div class="learning-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>Specialization</h4>
+                <p>Focus on specialized skills for senior roles</p>
+                <div class="step-skills" id="specializationSkills">
+                  <!-- Specialization skills -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Plan -->
+        <div class="recommendation-section">
+          <div class="section-header">
+            <h2><i class="fas fa-tasks"></i> Your 90-Day Action Plan</h2>
+            <p class="section-description">
+              Concrete steps to advance your career
+            </p>
+          </div>
+
+          <div class="action-plan" id="actionPlan">
+            <div class="action-timeline">
+              <div class="action-item">
+                <div class="action-period">Week 1-2</div>
+                <div class="action-content">
+                  <h4>Skill Assessment & Planning</h4>
+                  <ul>
+                    <li>Complete online skill assessments</li>
+                    <li>Create learning schedule</li>
+                    <li>Set up development environment</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="action-item">
+                <div class="action-period">Week 3-6</div>
+                <div class="action-content">
+                  <h4>Foundation Learning</h4>
+                  <ul>
+                    <li>Complete core skill courses</li>
+                    <li>Build practice projects</li>
+                    <li>Join relevant communities</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="action-item">
+                <div class="action-period">Week 7-10</div>
+                <div class="action-content">
+                  <h4>Advanced Skills Development</h4>
+                  <ul>
+                    <li>Take advanced courses</li>
+                    <li>Contribute to open source</li>
+                    <li>Network with professionals</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="action-item">
+                <div class="action-period">Week 11-12</div>
+                <div class="action-content">
+                  <h4>Job Application Preparation</h4>
+                  <ul>
+                    <li>Update resume and portfolio</li>
+                    <li>Practice technical interviews</li>
+                    <li>Apply to recommended positions</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn-secondary" onclick="goBackToProfile()">
+          <i class="fas fa-arrow-left"></i> Edit Profile
+        </button>
+        <button class="btn-primary" onclick="exportRecommendations()">
+          <i class="fas fa-download"></i> Export Report
+        </button>
+        <button class="btn-primary" onclick="shareRecommendations()">
+          <i class="fas fa-share-alt"></i> Share Results
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-content">
+        <div class="loading-spinner">
+          <i class="fas fa-brain fa-spin"></i>
+        </div>
+        <h3>Generating AI Recommendations</h3>
+        <p id="loadingText">Analyzing your profile...</p>
+        <div class="loading-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" id="loadingProgress"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts in correct order -->
+    <script src="../js/auth.js"></script>
+    <script src="../js/resume-based-recommendation-engine.js"></script>
+  </body>
+</html>

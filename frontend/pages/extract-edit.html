@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Review & Edit Details - DreamRoute AI</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/edit-page.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-brain"></i>
+          <span>DreamRoute AI</span>
+        </div>
+        <div class="nav-menu">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="#" class="nav-link" onclick="goBack()">Back</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="loading-content">
+        <div class="loading-spinner"></div>
+        <h3>Processing Your Resume</h3>
+        <p>AI is analyzing and extracting information...</p>
+        <div class="loading-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" id="loadingProgress"></div>
+          </div>
+          <span id="loadingText">Initializing...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="edit-container">
+      <div class="edit-header">
+        <div class="header-content">
+          <h1 class="page-title">Review & Edit Your Profile</h1>
+          <p class="page-subtitle">
+            Please verify and update your information before generating AI
+            recommendations
+          </p>
+          <div class="extraction-status" id="extractionStatus">
+            <i class="fas fa-check-circle"></i>
+            <span>Resume successfully processed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="edit-content">
+        <!-- Progress Indicator -->
+        <div class="progress-indicator">
+          <div class="step completed">
+            <div class="step-number">1</div>
+            <span>Upload Resume</span>
+          </div>
+          <div class="step-line completed"></div>
+          <div class="step active">
+            <div class="step-number">2</div>
+            <span>Review & Edit</span>
+          </div>
+          <div class="step-line"></div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <span>AI Analysis</span>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <form id="profileForm" class="profile-form">
+          <!-- Personal Information -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2><i class="fas fa-user"></i> Personal Information</h2>
+              <div class="section-status" id="personalStatus">
+                <i class="fas fa-info-circle"></i>
+                <span>Extracted from resume</span>
+              </div>
+            </div>
+            <div class="section-content">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fullName"
+                    >Full Name <span class="required">*</span></label
+                  >
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="fullName"
+                    required
+                    placeholder="Enter your full name"
+                  />
+                  <div class="input-feedback" id="nameConfidence"></div>
+                </div>
+                <div class="form-group">
+                  <label for="email"
+                    >Email Address <span class="required">*</span></label
+                  >
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="your.email@domain.com"
+                  />
+                  <div class="input-feedback" id="emailConfidence"></div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="+1-234-567-8900"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="address">Address</label>
+                  <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    placeholder="City, State, Country"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+              <button type="button" class="add-btn" onclick="addEducation()">
+                <i class="fas fa-plus"></i> Add More
+              </button>
+            </div>
+            <div class="section-content" id="educationContainer">
+              <div class="education-item" data-index="0">
+                <div class="item-header">
+                  <h4>Education #1</h4>
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    onclick="removeEducation(0)"
+                    style="display: none"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="degree0"
+                      >Degree <span class="required">*</span></label
+                    >
+                    <select id="degree0" name="degree0" required>
+                      <option value="">Select Degree</option>
+                      <option value="B.Tech Computer Science">
+                        B.Tech Computer Science
+                      </option>
+                      <option value="B.Tech Artificial Intelligence">
+                        B.Tech Artificial Intelligence
+                      </option>
+                      <option value="B.Tech Data Science">
+                        B.Tech Data Science
+                      </option>
+                      <option value="B.Tech Cyber Security">
+                        B.Tech Cyber Security
+                      </option>
+                      <option value="B.Tech Information Technology">
+                        B.Tech Information Technology
+                      </option>
+                      <option value="B.Tech Electrical Engineering">
+                        B.Tech Electrical Engineering
+                      </option>
+                      <option value="B.Tech Electronics Engineering">
+                        B.Tech Electronics Engineering
+                      </option>
+                      <option value="B.Tech Mechanical Engineering">
+                        B.Tech Mechanical Engineering
+                      </option>
+                      <option value="B.Sc Computer Science">
+                        B.Sc Computer Science
+                      </option>
+                      <option value="BCA">
+                        BCA (Bachelor of Computer Applications)
+                      </option>
+                      <option value="M.Tech">M.Tech</option>
+                      <option value="MCA">
+                        MCA (Master of Computer Applications)
+                      </option>
+                      <option value="MBA">MBA</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="institution0"
+                      >Institution <span class="required">*</span></label
+                    >
+                    <input
+                      type="text"
+                      id="institution0"
+                      name="institution0"
+                      required
+                      placeholder="University/College name"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="year0">Graduation Year</label>
+                    <input
+                      type="number"
+                      id="year0"
+                      name="year0"
+                      min="2020"
+                      max="2030"
+                      placeholder="2025"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="cgpa0">CGPA/Percentage</label>
+                    <input
+                      type="text"
+                      id="cgpa0"
+                      name="cgpa0"
+                      placeholder="8.5 or 85%"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2><i class="fas fa-code"></i> Skills</h2>
+              <div class="skills-summary" id="skillsSummary">
+                <span class="skill-count">0 skills found</span>
+              </div>
+            </div>
+            <div class="section-content">
+              <div class="skills-input-group">
+                <div class="skill-input-container">
+                  <input
+                    type="text"
+                    id="skillInput"
+                    placeholder="Type a skill and press Enter or comma"
+                    autocomplete="off"
+                  />
+                  <div class="skill-suggestions" id="skillSuggestions"></div>
+                </div>
+                <button
+                  type="button"
+                  class="add-skill-btn"
+                  onclick="addSkillFromInput()"
+                >
+                  <i class="fas fa-plus"></i> Add
+                </button>
+              </div>
+              <div class="skills-container" id="skillsContainer">
+                <!-- Skills will be dynamically added here -->
+              </div>
+              <div class="suggested-skills" id="suggestedSkills">
+                <h4>Suggested Skills:</h4>
+                <div class="suggestions-container"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2><i class="fas fa-briefcase"></i> Work Experience</h2>
+              <button type="button" class="add-btn" onclick="addExperience()">
+                <i class="fas fa-plus"></i> Add More
+              </button>
+            </div>
+            <div class="section-content" id="experienceContainer">
+              <div class="experience-item" data-index="0">
+                <div class="item-header">
+                  <h4>Experience #1</h4>
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    onclick="removeExperience(0)"
+                    style="display: none"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="company0">Company</label>
+                    <input
+                      type="text"
+                      id="company0"
+                      name="company0"
+                      placeholder="Company name"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="role0">Job Title</label>
+                    <input
+                      type="text"
+                      id="role0"
+                      name="role0"
+                      placeholder="Software Engineer"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="duration0">Duration</label>
+                    <input
+                      type="text"
+                      id="duration0"
+                      name="duration0"
+                      placeholder="Jan 2023 - Dec 2023"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="location0">Location</label>
+                    <input
+                      type="text"
+                      id="location0"
+                      name="location0"
+                      placeholder="City, State"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="description0">Description</label>
+                  <textarea
+                    id="description0"
+                    name="description0"
+                    rows="3"
+                    placeholder="Describe your role and achievements..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Internships -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2><i class="fas fa-user-tie"></i> Internships</h2>
+              <button type="button" class="add-btn" onclick="addInternship()">
+                <i class="fas fa-plus"></i> Add More
+              </button>
+            </div>
+            <div class="section-content" id="internshipContainer">
+              <div class="internship-item" data-index="0">
+                <div class="item-header">
+                  <h4>Internship #1</h4>
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    onclick="removeInternship(0)"
+                    style="display: none"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="internCompany0">Company</label>
+                    <input
+                      type="text"
+                      id="internCompany0"
+                      name="internCompany0"
+                      placeholder="Company name"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="internRole0">Role</label>
+                    <input
+                      type="text"
+                      id="internRole0"
+                      name="internRole0"
+                      placeholder="Software Development Intern"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="internDuration0">Duration</label>
+                    <input
+                      type="text"
+                      id="internDuration0"
+                      name="internDuration0"
+                      placeholder="Jun 2023 - Aug 2023"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="internLocation0">Location</label>
+                    <input
+                      type="text"
+                      id="internLocation0"
+                      name="internLocation0"
+                      placeholder="City, State"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="internDescription0">Description</label>
+                  <textarea
+                    id="internDescription0"
+                    name="internDescription0"
+                    rows="2"
+                    placeholder="Describe your internship experience..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2><i class="fas fa-project-diagram"></i> Projects</h2>
+              <button type="button" class="add-btn" onclick="addProject()">
+                <i class="fas fa-plus"></i> Add More
+              </button>
+            </div>
+            <div class="section-content" id="projectContainer">
+              <div class="project-item" data-index="0">
+                <div class="item-header">
+                  <h4>Project #1</h4>
+                  <button
+                    type="button"
+                    class="remove-btn"
+                    onclick="removeProject(0)"
+                    style="display: none"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="projectName0">Project Name</label>
+                    <input
+                      type="text"
+                      id="projectName0"
+                      name="projectName0"
+                      placeholder="E-commerce Website"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="projectTech0">Technologies</label>
+                    <input
+                      type="text"
+                      id="projectTech0"
+                      name="projectTech0"
+                      placeholder="React, Node.js, MongoDB"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="projectDescription0">Description</label>
+                  <textarea
+                    id="projectDescription0"
+                    name="projectDescription0"
+                    rows="2"
+                    placeholder="Describe your project..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Career Interests -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2><i class="fas fa-heart"></i> Career Interests</h2>
+              <p class="section-description">
+                Select areas that interest you most
+              </p>
+            </div>
+            <div class="section-content">
+              <div class="interests-grid">
+                <label class="interest-checkbox">
+                  <input type="checkbox" name="interests" value="AI/ML" />
+                  <span class="checkmark"></span>
+                  <div class="interest-content">
+                    <i class="fas fa-brain"></i>
+                    <span>Artificial Intelligence / Machine Learning</span>
+                  </div>
+                </label>
+                <label class="interest-checkbox">
+                  <input
+                    type="checkbox"
+                    name="interests"
+                    value="Data Science"
+                  />
+                  <span class="checkmark"></span>
+                  <div class="interest-content">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Data Science & Analytics</span>
+                  </div>
+                </label>
+                <label class="interest-checkbox">
+                  <input
+                    type="checkbox"
+                    name="interests"
+                    value="Web Development"
+                  />
+                  <span class="checkmark"></span>
+                  <div class="interest-content">
+                    <i class="fas fa-globe"></i>
+                    <span>Web Development</span>
+                  </div>
+                </label>
+                <label class="interest-checkbox">
+                  <input
+                    type="checkbox"
+                    name="interests"
+                    value="Mobile Development"
+                  />
+                  <span class="checkmark"></span>
+                  <div class="interest-content">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Mobile App Development</span>
+                  </div>
+                </label>
+                <label class="interest-checkbox">
+                  <input
+                    type="checkbox"
+                    name="interests"
+                    value="Cyber Security"
+                  />
+                  <span class="checkmark"></span>
+                  <div class="interest-content">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Cybersecurity</span>
+                  </div>
+                </label>
+                <label class="interest-checkbox">
+                  <input
+                    type="checkbox"
+                    name="interests"
+                    value="Cloud Computing"
+                  />
+                  <span class="checkmark"></span>
+                  <div class="interest-content">
+                    <i class="fas fa-cloud"></i>
+                    <span>Cloud Computing</span>
+                  </div>
+                </label>
+                <label class="interest-checkbox">
+                  <input type="checkbox" name="interests" value="DevOps" />
+                  <span class="checkmark"></span>
+                  <div class="interest-content">
+                    <i class="fas fa-cogs"></i>
+                    <span>DevOps & Infrastructure</span>
+                  </div>
+                </label>
+                <label class="interest-checkbox">
+                  <input
+                    type="checkbox"
+                    name="interests"
+                    value="UI/UX Design"
+                  />
+                  <span class="checkmark"></span>
+                  <div class="interest-content">
+                    <i class="fas fa-paint-brush"></i>
+                    <span>UI/UX Design</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="goBack()">
+            <i class="fas fa-arrow-left"></i> Back to Upload
+          </button>
+          <button
+            type="button"
+            class="btn-primary"
+            onclick="generateAIRecommendations()"
+          >
+            <i class="fas fa-magic"></i> Generate AI Recommendations
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/edit-page.js"></script>
+  </body>
+</html>

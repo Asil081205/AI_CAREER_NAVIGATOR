@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Resume - AI Career Navigator</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/upload-page.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- PDF.js library for better PDF parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-brain"></i>
+          <span>DreamRoute AI</span>
+        </div>
+        <div class="nav-menu">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../index.html" class="nav-link">Back</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="upload-container">
+      <div class="upload-header">
+        <h1>Upload Your Resume</h1>
+        <p>Supported formats: PDF, DOC, DOCX (Max 5MB)</p>
+        <div class="upload-stats">
+          <div class="stat-item">
+            <span class="stat-number">10K+</span>
+            <span class="stat-label">Resumes Processed</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">99%</span>
+            <span class="stat-label">Accuracy Rate</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-content" id="uploadContent">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <h3>Drag & Drop your resume here</h3>
+          <p>or click to browse files</p>
+          <input type="file" id="fileInput" accept=".pdf,.doc,.docx" hidden />
+        </div>
+
+        <div class="file-preview" id="filePreview" style="display: none">
+          <div class="file-info">
+            <div class="file-icon" id="fileIcon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="file-details">
+              <h4 id="fileName"></h4>
+              <p id="fileSize"></p>
+              <div
+                class="extraction-preview"
+                id="extractionPreview"
+                style="display: none"
+              >
+                <div class="preview-item">
+                  <strong>Name:</strong>
+                  <span id="previewName">Not detected</span>
+                </div>
+                <div class="preview-item">
+                  <strong>Email:</strong>
+                  <span id="previewEmail">Not detected</span>
+                </div>
+                <div class="preview-item">
+                  <strong>Skills:</strong>
+                  <span id="previewSkills">Not detected</span>
+                </div>
+              </div>
+              <div class="file-actions">
+                <button
+                  type="button"
+                  class="change-file-btn"
+                  onclick="changeFile()"
+                >
+                  <i class="fas fa-exchange-alt"></i> Change File
+                </button>
+                <button
+                  type="button"
+                  class="preview-btn"
+                  onclick="quickPreview()"
+                  style="display: none"
+                >
+                  <i class="fas fa-eye"></i> Quick Preview
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="upload-progress" id="uploadProgress" style="display: none">
+          <div class="progress-info">
+            <h3 id="progressTitle">Processing Your Resume</h3>
+            <p id="progressDescription">Initializing AI parser...</p>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="progress-details">
+            <span id="progressText">0%</span>
+            <span id="progressStats"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="upload-actions">
+        <button class="btn-secondary" onclick="goBack()">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+        <button
+          class="btn-primary"
+          id="uploadBtn"
+          disabled
+          onclick="processResume()"
+        >
+          <i class="fas fa-magic"></i> Parse Resume
+        </button>
+      </div>
+
+      <!-- Debug Panel (for development) -->
+      <div class="debug-panel" id="debugPanel" style="display: none">
+        <h4>Debug Information</h4>
+        <div class="debug-content">
+          <div>
+            <strong>File Type:</strong> <span id="debugFileType"></span>
+          </div>
+          <div>
+            <strong>File Size:</strong> <span id="debugFileSize"></span>
+          </div>
+          <div>
+            <strong>Text Length:</strong> <span id="debugTextLength"></span>
+          </div>
+          <div>
+            <strong>Extraction Status:</strong> <span id="debugStatus"></span>
+          </div>
+        </div>
+        <textarea
+          id="debugText"
+          placeholder="Extracted text will appear here..."
+          rows="6"
+        ></textarea>
+      </div>
+
+      <!-- Features Info -->
+      <div class="features-info">
+        <h3>What happens after upload?</h3>
+        <div class="features-list">
+          <div class="feature-item">
+            <i class="fas fa-search"></i>
+            <span>Advanced AI extracts all resume details</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-edit"></i>
+            <span>Review and edit extracted information</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-brain"></i>
+            <span>Get personalized career recommendations</span>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-briefcase"></i>
+            <span>Find matching job opportunities</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/resume-parser.js"></script>
+    <script src="../js/upload-page-enhanced.js"></script>
+  </body>
+</html>
